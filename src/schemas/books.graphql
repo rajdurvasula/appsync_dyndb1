@@ -1,0 +1,132 @@
+type Book {
+	id: ID!
+	title: String
+	shortdescription: String
+	price: Float
+	rating: Int
+}
+
+type BookConnection {
+	items: [Book]
+	nextToken: String
+}
+
+input CreateBookInput {
+	title: String
+	shortdescription: String
+	price: Float
+	rating: Int
+}
+
+input DeleteBookInput {
+	id: ID!
+}
+
+type Mutation {
+	createBook(input: CreateBookInput!): Book
+	updateBook(input: UpdateBookInput!): Book
+	deleteBook(input: DeleteBookInput!): Book
+}
+
+type Query {
+	getBook(id: ID!): Book
+	listBooks(filter: TableBookFilterInput, limit: Int, nextToken: String): BookConnection
+}
+
+type Subscription {
+	onCreateBook(
+		id: ID,
+		title: String,
+		shortdescription: String,
+		price: Float,
+		rating: Int
+	): Book
+		@aws_subscribe(mutations: ["createBook"])
+	onUpdateBook(
+		id: ID,
+		title: String,
+		shortdescription: String,
+		price: Float,
+		rating: Int
+	): Book
+		@aws_subscribe(mutations: ["updateBook"])
+	onDeleteBook(
+		id: ID,
+		title: String,
+		shortdescription: String,
+		price: Float,
+		rating: Int
+	): Book
+		@aws_subscribe(mutations: ["deleteBook"])
+}
+
+input TableBookFilterInput {
+	id: TableIDFilterInput
+	title: TableStringFilterInput
+	shortdescription: TableStringFilterInput
+	price: TableFloatFilterInput
+	rating: TableIntFilterInput
+}
+
+input TableBooleanFilterInput {
+	ne: Boolean
+	eq: Boolean
+}
+
+input TableFloatFilterInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	contains: Float
+	notContains: Float
+	between: [Float]
+}
+
+input TableIDFilterInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+}
+
+input TableIntFilterInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	contains: Int
+	notContains: Int
+	between: [Int]
+}
+
+input TableStringFilterInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+}
+
+input UpdateBookInput {
+	id: ID!
+	title: String
+	shortdescription: String
+	price: Float
+	rating: Int
+}
